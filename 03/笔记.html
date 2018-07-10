@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>笔记</title>
+  <!-- <link rel="stylesheet" href="lib/css/monokai-sublime.css"> -->
+  <link rel="stylesheet" href="lib/css/default.min.css">
+  <link rel="stylesheet" href="lib/css/vs2015.css">
+  <link rel="stylesheet" href="lib/css/zTreeStyle/zTreeStyle.css">
+  <link rel="stylesheet" href="lib/css/base.css">
+  <link rel="stylesheet" href="lib/css/index.css">
+</head>
+
+<body>
+  <div style='width:25%;'>
+    <ul id="tree" class="ztree" style='width:100%'>
+
+    </ul>
+  </div>
+  <div id='readme' style='width:70%;margin-left:20%;'>
+    <article class='markdown-body'><h1 id="nodejs">NodeJS</h1>
+<h2 id="art-template-">art-template 模板引擎</h2>
+<ul>
+<li><a href="https://aui.github.io/art-template/zh-cn/docs/">文档</a></li>
+<li>安装</li>
+</ul>
+<pre><code class="lang-bash">npm install art-template
+</code></pre>
+<ul>
+<li>核心方法</li>
+</ul>
+<pre><code class="lang-javascript">// 基于模板路径渲染模板
+//参数1：文件的路径，必须是绝对路径
+//参数2：数据
+//返回值：返回渲染后的内容
+var html = template(filename, data)
+// template(path.join(__dirname, &quot;pages&quot;, &quot;index.html&quot;), {name:&quot;大吉大利，今晚吃鸡&quot;});
+
+// 将模板源代码编译成函数
+var render = template.compile(source)
+render(data)
+// var render = template.compile(&#39;&lt;div&gt;{{ name }}&lt;/div&gt;&#39;)
+// var html = render({name: &#39;大吉大利&#39;})
+
+// 将模板源代码编译成函数并立刻执行
+template.render(source, data)
+// var html = template.render(&#39;&lt;div&gt;{{ name }}&lt;/div&gt;&#39;, {name: &#39;大吉大利&#39;})
+</code></pre>
+<p><strong>总结：如果一个模版，需要渲染很多次，那么可以使用complie方法</strong></p>
+<h2 id="hacknews-">hacknews 数据处理</h2>
+<ul>
+<li>采用<code>后端渲染</code>将模板页面和数据渲染为用户能够看懂的正常页面返回</li>
+</ul>
+<h2 id="url-">url模块</h2>
+<ul>
+<li>说明：用于 URL 处理与解析</li>
+<li>注意：通过url拿到的查询参数都是字符串格式</li>
+</ul>
+<pre><code class="lang-js">// 导入url模块
+var url = require(&#39;url&#39;)
+
+// 解析 URL 字符串并返回一个 URL 对象
+// 第一个参数：表示要解析的URL字符串
+// 第二个参数：是否将query属性（查询参数）解析为一个对象，如果为：true，则query是一个对象
+var ret = url.parse(&#39;http://localhost:3000/details?id=1&amp;name=jack&#39;, true)
+console.log(ret.query) // { id: &#39;1&#39;, name: &#39;jack&#39; }
+</code></pre>
+<h2 id="querystring-">querystring模块</h2>
+<ul>
+<li>用于解析与格式化 URL 查询字符串</li>
+<li>注意：只在专门处理查询字符串时使用</li>
+</ul>
+<pre><code class="lang-js">// foo=bar&amp;abc=xyz&amp;abc=123
+var querystring = require(&#39;querystring&#39;)
+
+// 将查询参数转化为对象
+// 第一个参数: 要解析的 URL 查询字符串
+querystring.parse(&#39;foo=bar&amp;abc=xyz&#39;) // { foo: &#39;bar&#39;, abc: &#39;xyz&#39; }
+</code></pre>
+<h2 id="-">服务端重定向</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">HTTP 状态码说明</a></li>
+<li><a href="http://shuai.be/archives/301-302-redirection/">301 和 302</a></li>
+<li>说明：服务端可以通过HTTP状态码让浏览器中的页面重定向</li>
+</ul>
+<pre><code class="lang-js">res.writeHead(302, {
+  &#39;Location&#39;: &#39;/&#39;
+})
+</code></pre>
+<h2 id="post-">POST请求参数的处理</h2>
+<ul>
+<li>说明：POST请求可以发送大量数据，没有大小限制</li>
+</ul>
+<pre><code class="lang-js">// 接受POST参数
+var postData = []
+
+// data事件：用来接受客户端发送过来的POST请求数据
+var result = &quot;&quot;;
+req.on(&#39;data&#39;, function (chunk) {
+  result += chunk;
+})
+
+// end事件：当POST数据接收完毕时，触发
+req.on(&#39;end&#39;, function () {
+  cosnole.log(result); 
+})
+</code></pre>
+<h2 id="-">其他模板引擎</h2>
+<ul>
+<li><a href="https://github.com/mde/ejs">ejs</a></li>
+<li><a href="http://www.css88.com/doc/underscore/">underscore</a></li>
+<li><p><a href="https://github.com/pugjs/pug">jade/pug</a></p>
+</li>
+<li><p>安装：<code>npm i ejs</code></p>
+</li>
+<li>安装：<code>npm i underscore</code></li>
+<li>安装：<code>npm i pug</code></li>
+</ul>
+<pre><code class="lang-js">// ejs 示例：
+var html = ejs.render(&#39;&lt;%= name %&gt;喜欢吃：&lt;%= food %&gt;&#39;, {
+  name: &#39;rose&#39;,
+  food: &#39;西红柿&#39;
+})
+console.log(html)
+
+// underscore 示例：
+var compiled = _.template(&quot;hello: &lt;%= name %&gt;&quot;)
+var ret = compiled({ name: &#39;moe&#39; })
+console.log(ret)
+</code></pre>
+</article>
+  </div>
+</body>
+</html>
+<script type="text/javascript" src="lib/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="lib/js/ztree_toc.min.js"></script>
+<script type="text/javascript" src="lib/js/toc_conf.js"></script>
+<script src="lib/js/highlight.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // 代码高亮的js代码
+    hljs.initHighlightingOnLoad();
+
+    //生成侧边栏的代码
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+
+    var conf = eval(jquery_ztree_toc_opts);
+    $('#tree').ztree_toc(conf);
+  });
+</script>
