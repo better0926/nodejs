@@ -1,0 +1,11 @@
+{
+  "name": "hcc-tools",
+  "version": "1.0.0",
+  "description": "胡聪聪个人提供的非常好用的工具包",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
