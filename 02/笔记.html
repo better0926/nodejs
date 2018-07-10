@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>笔记</title>
+  <!-- <link rel="stylesheet" href="lib/css/monokai-sublime.css"> -->
+  <link rel="stylesheet" href="lib/css/default.min.css">
+  <link rel="stylesheet" href="lib/css/vs2015.css">
+  <link rel="stylesheet" href="lib/css/zTreeStyle/zTreeStyle.css">
+  <link rel="stylesheet" href="lib/css/base.css">
+  <link rel="stylesheet" href="lib/css/index.css">
+</head>
+
+<body>
+  <div style='width:25%;'>
+    <ul id="tree" class="ztree" style='width:100%'>
+
+    </ul>
+  </div>
+  <div id='readme' style='width:70%;margin-left:20%;'>
+    <article class='markdown-body'><h1 id="http-">http模块</h1>
+<h2 id="-">练习-服务器响应文件</h2>
+<h2 id="-apache-">练习-模拟Apache服务器</h2>
+<p>apache的功能</p>
+<pre><code class="lang-javascript">在浏览器中访问某个文件，apache就能在根目录找到对应的页面返回。
+    localhost:9999/index.html  希望访问index.html文件
+    localhost:9999/list.html   希望访问list.html文件
+    ......
+    如果发现没有这个文件，       返回404即可。
+</code></pre>
+<h2 id="mime-">MIME类型</h2>
+<ul>
+<li>MIME(Multipurpose Internet Mail Extensions)多用途Internet邮件扩展类型 是一种表示文档性质和格式的标准化方式</li>
+<li>浏览器通常使用MIME类型（而不是文件扩展名）来确定如何处理文档；因此服务器将正确的MIME类型附加到响应对象的头部是非常重要的</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_Types">MIME 类型</a></li>
+</ul>
+<h2 id="mime-">mime模块</h2>
+<ul>
+<li>作用：获取文件的MIME类型</li>
+<li>安装：<code>npm i mime</code></li>
+</ul>
+<pre><code class="lang-js">var mime = require(&#39;mime&#39;)
+
+// 获取路径对应的MIME类型
+mime.getType(&#39;txt&#39;)                    // ⇨ &#39;text/plain&#39;
+// 根据MIME获取到文件后缀名
+mime.getExtension(&#39;text/plain&#39;)        // ⇨ &#39;txt&#39;
+</code></pre>
+<h1 id="npm-node-">npm - Node包管理工具</h1>
+<h2 id="npm-">npm的基本概念</h2>
+<ul>
+<li>node package manager</li>
+<li><a href="https://npmjs.com">npm官网</a></li>
+<li><a href="https://www.npmjs.com.cn/">npm中文文档</a></li>
+</ul>
+<pre><code class="lang-html">1. npm 是node的包管理工具，
+2. 它是世界上最大的软件注册表，每星期大约有 30 亿次的下载量，包含超过 600000 个 包（package） （即，代码模块）。
+3. 来自各大洲的开源软件开发者使用 npm 互相分享和借鉴。包的结构使您能够轻松跟踪依赖项和版本。
+
+npm 由三个独立的部分组成：、
+    网站
+    注册表（registry）
+    命令行工具 (CLI)
+</code></pre>
+<ul>
+<li>作用：通过<code>npm</code>来快速安装开发中使用的包</li>
+<li>npm不需要安装，只要安装了node，就自带了<code>npm</code></li>
+</ul>
+<h2 id="npm-">npm基本使用</h2>
+<h3 id="-">初始化包</h3>
+<pre><code class="lang-javascript">npm init;    //这个命令用于初始化一个包，创建一个package.json文件，我们的项目都应该先执行npm init
+npm init -y;  //快速的初始化一个包， 不能是一个中文名
+</code></pre>
+<h3 id="-">安装包</h3>
+<pre><code class="lang-javascript">npm install 包名;  //安装指定的包名的最新版本到项目中
+npm install 包名@版本号;  //安装指定包的指定版本
+
+npm i 包名； //简写
+</code></pre>
+<h3 id="-">卸载包</h3>
+<pre><code class="lang-javascript">npm uninstall 包名;  //卸载已经安装的包
+</code></pre>
+<h2 id="-">本地安装和全局安装</h2>
+<p>有两种方式用来安装 npm 包：本地安装和全局安装。选用哪种方式来安装，取决于你如何使用这个包。 </p>
+<ul>
+<li>全局安装：如果你想将其作为一个命令行工具，那么你应该将其安装到全局。这种安装方式后可以让你在任何目录下使用这个命令。比如less命令，webpack命令，hcc-md命令 。</li>
+<li>本地安装：如果你自己的模块依赖于某个包，并通过 Node.js 的 <code>require</code> 加载，那么你应该选择本地安装，这种方式也是 <code>npm install</code> 命令的默认行为。</li>
+</ul>
+<pre><code class="lang-javascript">// 全局安装,会把npm包安装到C:\Users\HUCC\AppData\Roaming\npm目录下，作为命令行工具使用
+npm install -g 包名;
+
+//本地安装，会把npm包安装到当前项目的node_modules文件中，作为项目的依赖
+npm install 包名;  
+</code></pre>
+<h2 id="package-json-">package.json文件</h2>
+<p>package.json文件，包（项目）描述文件，用来管理组织一个包（项目），它是一个纯JSON格式的。</p>
+<ul>
+<li>作用：描述当前项目（包）的信息，描述当前包（项目）的依赖项</li>
+<li>如何生成：<code>npm init</code>或者<code>npm init -y</code></li>
+<li>作用<ul>
+<li>作为一个标准的包，必须要有<code>package.json</code>文件进行描述</li>
+<li>一个项目的node_modules目录通常都会很大，不用拷贝node_modules目录，可以通过package.json文件配合<code>npm install</code>直接安装项目所有的依赖项</li>
+<li>命令：<code>npm i --production</code>安装项目依赖项（不包括开发依赖）</li>
+</ul>
+</li>
+<li>描述内容</li>
+</ul>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;03-npm&quot;,  //描述了包的名字，不能有中文
+  &quot;version&quot;: &quot;1.0.0&quot;,  //描述了包的的版本信息， x.y.z  如果只是修复bug，需要更新Z位。如果是新增了功能，但是向下兼容，需要更新Y位。如果有大变动，向下不兼容，需要更新X位。
+  &quot;description&quot;: &quot;&quot;, //包的描述信息
+  &quot;main&quot;: &quot;index.js&quot;, //入口文件（模块化加载规则的时候详细的讲）
+  &quot;scripts&quot;: {  //配置一些脚本，在vue的时候会用到，现在体会不到
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;keywords&quot;: [],  //关键字（方便搜索）
+  &quot;author&quot;: &quot;&quot;,  //作者的信息
+  &quot;license&quot;: &quot;ISC&quot;,  //许可证，开源协议
+  &quot;dependencies&quot;: {   //重要，项目的依赖， 方便代码的共享  通过 npm install可以直接安装所有的依赖项
+    &quot;bootstrap&quot;: &quot;^3.3.7&quot;,
+    &quot;jquery&quot;: &quot;^3.3.1&quot;
+  },
+  &quot;devDependencies&quot;: {  //配置开发依赖项，只是在开发阶段有用，真正运行环境不需要使用，如果需要安装所有的开发依赖项，通过
+    &quot;webpack&quot;: &quot;^3.0.4&quot;
+  }
+}
+</code></pre>
+<p><strong>注意：一个合法的package.json，必须要有name和version两个属性</strong> </p>
+<p>问题：</p>
+<pre><code> 1.  什么时候使用 `-g`
+2.  什么时候 需要加上`--save-dev`
+3.  最简单的就是看文档
+</code></pre><h2 id="npm-">npm下载加速</h2>
+<h3 id="-cnpm">淘宝镜像和cnpm</h3>
+<ul>
+<li><a href="http://npm.taobao.org/">淘宝镜像</a></li>
+<li>安装：<code>npm i cnpm -g --registry=https://registry.npm.taobao.org</code></li>
+</ul>
+<pre><code class="lang-shell"># 设置淘宝镜像
+npm config set registry https://registry.npm.taobao.org --global
+npm config set disturl https://npm.taobao.org/dist --global
+</code></pre>
+<h3 id="nrm">nrm</h3>
+<ul>
+<li>nrm：npm registry manager（npm仓库地址管理工具）</li>
+<li>安装：<code>npm i -g nrm</code></li>
+</ul>
+<pre><code class="lang-shell"># 带*表示当前正在使用的地址
+
+# 查看仓库地址列表
+nrm ls
+
+# 切换仓库地址
+nrm use taobao
+</code></pre>
+<h2 id="nodemon-">nodemon 自动重启</h2>
+<ul>
+<li>作用：监视到js文件修改后，自动重启node程序</li>
+<li>安装：<code>npm i -g nodemon</code></li>
+<li>使用：<code>nodemon app.js</code> 运行node程序</li>
+</ul>
+<h1 id="hacknews-">hacknews案例</h1>
+<ul>
+<li><a href="https://news.ycombinator.com/">Hacker News 示例</a></li>
+<li>路由（route）：就是一套映射规则，根据url地址分配到对应的处理程序</li>
+</ul>
+<h2 id="-">功能划分</h2>
+<ul>
+<li>1 新闻列表页 - /index    get</li>
+<li>2 新闻详情页 - /details  get</li>
+<li>3 新闻添加页 - /submit   get</li>
+<li>4 新闻添加请求 - /add    post</li>
+</ul>
+</article>
+  </div>
+</body>
+</html>
+<script type="text/javascript" src="lib/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="lib/js/ztree_toc.min.js"></script>
+<script type="text/javascript" src="lib/js/toc_conf.js"></script>
+<script src="lib/js/highlight.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // 代码高亮的js代码
+    hljs.initHighlightingOnLoad();
+
+    //生成侧边栏的代码
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+
+    var conf = eval(jquery_ztree_toc_opts);
+    $('#tree').ztree_toc(conf);
+  });
+</script>
